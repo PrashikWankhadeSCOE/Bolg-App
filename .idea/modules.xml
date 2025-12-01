@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Bolg-App.iml" filepath="$PROJECT_DIR$/.idea/Bolg-App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/blogapp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/blogapp.main.iml" />
     </modules>
   </component>
 </project>
