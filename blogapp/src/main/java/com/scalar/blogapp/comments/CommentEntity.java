@@ -5,10 +5,9 @@ import com.scalar.blogapp.article.ArticleEntity;
 import com.scalar.blogapp.users.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 import java.util.Date;
 
 @Entity(name = "comments")

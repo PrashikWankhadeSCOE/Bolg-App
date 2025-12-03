@@ -3,7 +3,7 @@ package com.scalar.blogapp.users;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 @Entity(name = "users")
 @Getter
