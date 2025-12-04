@@ -4,6 +4,7 @@ import com.scalar.blogapp.users.dtos.CreateUserRequest;
 import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.jmx.export.notification.UnableToSendNotificationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,15 +12,16 @@ public class UsersService {
 
     private UsersRepository usersRepository;
     private ModelMapper modelMapper;
+    private PasswordEncoder passwordEncoder;
 
-    public UsersService(UsersRepository usersRepository,ModelMapper modelMapper) {
+    public UsersService(UsersRepository usersRepository,ModelMapper modelMapper,PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
     public UserEntity createUser(CreateUserRequest u){
         UserEntity newUser = modelMapper.map(u,UserEntity.class);
-
-        // Todo : encrypt password and save it
+        newUser.setPassword(passwordEncoder.encode(u.getPassword()));
 
         //-------- No need to write below code model mapper can alone do it by itself ---------
 //        var newUser = UserEntity.builder()
@@ -42,7 +44,9 @@ public class UsersService {
     public UserEntity loginUser(String username,String password){
         var user = usersRepository.findByUsername(username).orElseThrow(()-> new UnableToSendNotificationException(username));
 
-        //Todo: match pass  condition to be added
+        var passMatcher = passwordEncoder.matches(password,user.getPassword());
+        if(!passMatcher) throw new InvalidCredentialException();
+
         return user;
     }
 
@@ -54,6 +58,12 @@ public class UsersService {
 
         public UserNotFoundException(Long userId){
             super("User with userId : " + userId + " Not found");
+        }
+    }
+
+    public static class InvalidCredentialException extends IllegalArgumentException{
+        public InvalidCredentialException(){
+            super("Invalid username or password combination");
         }
     }
 }

@@ -43,7 +43,8 @@ public class UsersController {
     }
 
     @ExceptionHandler({
-            UsersService.UserNotFoundException.class
+            UsersService.UserNotFoundException.class,
+            UsersService.InvalidCredentialException.class
     })
     ResponseEntity<ErrorResponse > handleUserNotFoundException(Exception ex){
 
@@ -53,10 +54,16 @@ public class UsersController {
         if(ex instanceof UsersService.UserNotFoundException) {
             message = ex.getMessage();
             status = HttpStatus.NOT_FOUND;
-        }else{
-            message = "Something went wrong";
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }else if(ex instanceof UsersService.InvalidCredentialException){
+            message = ex.getMessage();
+            status = HttpStatus.UNAUTHORIZED;
         }
+        else
+            {
+                message = "Something went wrong";
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+
 
         ErrorResponse response = ErrorResponse.builder()
                 .message(message)
