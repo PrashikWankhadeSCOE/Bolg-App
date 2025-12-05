@@ -17,17 +17,11 @@ public class AppSecurityConfigs {
     private JWTService jwtService;
     private UsersService usersService;
 
-    public AppSecurityConfigs(JWTAuthenticationFilter jwtAuthenticationFilter, JWTService jwtService, UsersService usersService) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    public AppSecurityConfigs( JWTService jwtService, UsersService usersService) {
+        this.jwtAuthenticationFilter =  new JWTAuthenticationFilter(
+                new JWTAuthenticationManager(jwtService, usersService));
         this.jwtService = jwtService;
         this.usersService = usersService;
-    }
-
-    @Bean
-    JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception{
-        return new JWTAuthenticationFilter(
-                new JWTAuthenticationManager(jwtService,usersService)
-        );
     }
 
     @Bean
