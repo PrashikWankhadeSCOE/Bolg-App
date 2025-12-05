@@ -23,7 +23,7 @@ public class JWTService {
                 .sign(algorithm);
     }
 
-    private Long retrieveUserId(String jwtString){
+    public Long retrieveUserId(String jwtString){
         var decodedJWT = JWT.decode(jwtString);
         var userId = Long.valueOf(decodedJWT.getSubject());
         return userId;
