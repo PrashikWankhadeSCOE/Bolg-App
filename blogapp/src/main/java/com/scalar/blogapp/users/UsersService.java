@@ -1,5 +1,6 @@
 package com.scalar.blogapp.users;
 
+import com.scalar.blogapp.security.JWTService;
 import com.scalar.blogapp.users.dtos.CreateUserRequest;
 import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
@@ -22,13 +23,6 @@ public class UsersService {
     public UserEntity createUser(CreateUserRequest u){
         UserEntity newUser = modelMapper.map(u,UserEntity.class);
         newUser.setPassword(passwordEncoder.encode(u.getPassword()));
-
-        //-------- No need to write below code model mapper can alone do it by itself ---------
-//        var newUser = UserEntity.builder()
-//                .username(u.getUsername())
-// //               .password(password) //Todo:  Encrypt Password
-//                .email(u.getEmail())
-//                .build();
 
         return usersRepository.save(newUser);
     }
